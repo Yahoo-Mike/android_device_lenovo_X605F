@@ -1,0 +1,3 @@
+persist.sys.timeadjust         u:object_r:timekeep_prop:s0
+service.camera.hdmi_preview    u:object_r:camera_prop:s0
+

@@ -1,0 +1,4 @@
+# See comment in file_contexts for reason why hci_qcomm_init needs to be able
+# to search /persist/bluetooth/ folder.
+r_dir_file(bluetooth_loader, persist_bluetooth_file);
+

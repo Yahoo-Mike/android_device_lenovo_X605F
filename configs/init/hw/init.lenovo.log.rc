@@ -1,0 +1,115 @@
+
+on post-fs-data
+    symlink /data/local /local
+    mkdir /data/local/log 0771 vendor vendor
+    mkdir /data/local/log/lastlog 0777 shell shell
+    mkdir /data/local/log/lastkmsg 0777 shell shell
+    mkdir /data/local/log/aplog 0777 vendor vendor
+    restorecon /system/bin  
+
+on property:sys.lenovo.remove.diag=true
+    rm /dev/diag
+
+#add for aplog service
+#yexh1 service tcplog /system/xbin/tcpdump -s 1500 -w /local/log/aplog/tcp -C 1 -W 6 -i any host not 192.168.100.2 and host not 127.0.0.1
+service tcplog /system/bin/tcplog.sh
+    class main
+    disabled
+    oneshot
+
+#yexh1 service mainlog /system/bin/logcat -r2048 -n 8 -v threadtime -f /local/log/aplog/logcat
+service mainlog /system/bin/mainlog.sh
+    class main
+    disabled
+    oneshot
+
+service performance /system/bin/performance.sh
+    class main
+    disabled
+    oneshot
+
+service eventslog /system/bin/eventslog.sh
+    class main
+    disabled
+    oneshot
+
+service qxdmlog /system/bin/qxdmlog.sh
+    class main
+    disabled
+    oneshot
+
+#yexh1 service radiolog /system/bin/logcat -r2048 -b radio -n 8 -v time -f /local/log/aplog/radio "AT:S *:V"
+service radiolog /system/bin/radiolog.sh
+    class main
+ #   user vendor
+ #   group vendor root log
+    disabled
+    oneshot
+
+#yexh1 service dmesglog /system/bin/dmesglog.sh
+service kernellog /system/bin/kernellog.sh
+    class main
+    disabled
+    oneshot
+    
+#yexh1
+service lastkmsg /system/bin/lastkmsg.sh
+    class main
+    disabled
+    oneshot
+
+  
+service triggerlenovolog /system/bin/trigger.lenovo.log.sh
+   class main
+    oneshot
+
+
+#yexh1 service custom-setup /system/bin/init.lenovo.sh
+service lenovolog /system/bin/init.lenovo.log.sh
+    class main
+    disabled
+    oneshot
+
+service savelog /system/bin/savelog.sh
+    class main
+    disabled
+    oneshot
+
+service diaglog /system/bin/diaglog.sh
+    class main
+    disabled
+    oneshot
+
+service compresslog /system/bin/compresslog.sh
+    class main
+    disabled
+    oneshot
+
+service tzdbg /system/bin/tzbspdebug.sh
+    class main
+    disabled
+    oneshot
+
+service tadbg /system/bin/tadebug.sh
+    class main
+    disabled
+    oneshot
+
+on property:persist.sys.dloadmode.config=1
+    write /sys/module/msm_poweroff/parameters/download_mode 1
+    write /sys/module/msm_poweroff/parameters/lenovo_dump_mode 0
+    write /sys/bus/msm_subsys/devices/subsys0/restart_level system
+    write /sys/bus/msm_subsys/devices/subsys1/restart_level system
+    write /sys/bus/msm_subsys/devices/subsys2/restart_level system
+    write /sys/bus/msm_subsys/devices/subsys3/restart_level system
+    write /sys/bus/msm_subsys/devices/subsys4/restart_level system
+
+
+on property:persist.sys.dloadmode.config=0
+    write /sys/module/msm_poweroff/parameters/download_mode 0
+    write /sys/module/msm_poweroff/parameters/lenovo_dump_mode 1
+    write /sys/bus/msm_subsys/devices/subsys0/restart_level related
+    write /sys/bus/msm_subsys/devices/subsys1/restart_level related
+    write /sys/bus/msm_subsys/devices/subsys2/restart_level related
+    write /sys/bus/msm_subsys/devices/subsys3/restart_level related
+    write /sys/bus/msm_subsys/devices/subsys4/restart_level related

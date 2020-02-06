@@ -1,0 +1,3 @@
+# Run btnvtool and awk without changing domain
+allow bluetooth_loader btnvtool_exec:file execute_no_trans;
+allow bluetooth_loader vendor_awk_exec:file execute_no_trans;

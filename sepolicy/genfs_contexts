@@ -1,0 +1,18 @@
+# Label power supply driver properties for access from
+# hvdcp_opti (quick charger daemon) and health@2.0-service.
+genfscon sysfs /devices/soc.0/msm-bcl-18                 u:object_r:sysfs_batteryinfo:s0
+genfscon sysfs /devices/soc.0/qcom,bcl.57                u:object_r:sysfs_batteryinfo:s0
+genfscon sysfs /devices/soc.0/qpnp-vadc-6                u:object_r:sysfs_batteryinfo:s0
+genfscon sysfs /devices/soc.0/qpnp-vadc-13               u:object_r:sysfs_batteryinfo:s0
+genfscon sysfs /devices/soc.0/78db000.usb                u:object_r:sysfs_batteryinfo:s0
+genfscon sysfs /devices/soc.0/78b6000.i2c/i2c-2/2-006b   u:object_r:sysfs_batteryinfo:s0
+genfscon sysfs /devices/soc.0/78b6000.i2c/i2c-2/2-0055   u:object_r:sysfs_batteryinfo:s0
+genfscon sysfs /devices/soc.0/qpnp-smbcharger-16         u:object_r:sysfs_batteryinfo:s0
+genfscon sysfs /devices/soc.0/qpnp-rtc-8/                u:object_r:sysfs_rtc:s0
+genfscon sysfs /devices/soc.0/a000000.qcom,wcnss-wlan    u:object_r:sysfs_net:s0
+# Label sysfs_disk_stat for storaged use. Requires other custom rules because
+# we are practically overriding the sysfs_mmc_host label.
+genfscon sysfs /devices/soc.0/7824900.sdhci/mmc_host/mmc0 u:object_r:sysfs_disk_stat:s0
+genfscon sysfs /devices/soc.0/7824900.sdhci/mmc_host/mmc1 u:object_r:sysfs_mmc_host:s0
+genfscon sysfs /devices/platform/msm_hsusb               u:object_r:sysfs_android_usb:s0
+genfscon sysfs /devices/platform/msm_hsusb_host          u:object_r:sysfs_android_usb:s0

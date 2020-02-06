@@ -1,0 +1,8 @@
+#add for reserve space, for uid <= 10000, when free space of data < 50*1024 blocks
+
+on post-fs-data
+    start reserve_data
+
+service reserve_data /system/bin/tune2fs -u 10000 -r 51200 /dev/block/dm-1
+    oneshot
+

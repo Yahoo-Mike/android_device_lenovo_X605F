@@ -1,0 +1,2 @@
+# Allow mediacodec to open venus firmware
+r_dir_file(mediacodec, firmware_file)

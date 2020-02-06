@@ -1,0 +1,4 @@
+# hvdcp_opti (quick charger daemon)
+allow hvdcp sysfs_batteryinfo:dir  r_dir_perms;
+allow hvdcp sysfs_batteryinfo:file r_file_perms;
+

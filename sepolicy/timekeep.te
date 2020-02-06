@@ -1,0 +1,18 @@
+type timekeep, domain;
+type timekeep_exec, exec_type, file_type;
+
+# Started by init
+init_daemon_domain(timekeep)
+
+# Grant permission to set system time and to set the real-time lock
+allow timekeep self:capability { sys_time };
+
+# Opens:
+#   * /sys/class/rtc/rtc0/since_epoch
+#   * /data/time/ats_2
+
+allow timekeep time_data_file:file create_file_perms;
+allow timekeep time_data_file:dir create_dir_perms;
+r_dir_file(timekeep, sysfs_rtc);
+
+set_prop(timekeep, timekeep_prop)

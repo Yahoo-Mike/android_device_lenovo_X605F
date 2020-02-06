@@ -1,0 +1,2 @@
+allow installd time_data_file:dir { create_dir_perms relabelfrom relabelto };
+
