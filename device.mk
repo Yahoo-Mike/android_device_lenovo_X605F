@@ -137,7 +137,7 @@ PRODUCT_COPY_FILES += \
       $(vendor_hw_service):$(addprefix $(TARGET_COPY_OUT_VENDOR)/etc/init/hw/, $(notdir $(vendor_hw_service))) )
 
 PRODUCT_COPY_FILES += \
-    $(foreach vendor_service_bin, $(wildcard $(LOCAL_PATH)/configs/init/bin/*.rc), \
+    $(foreach vendor_service_bin, $(wildcard $(LOCAL_PATH)/configs/init/bin/*.sh), \
       $(vendor_service_bin):$(addprefix $(TARGET_COPY_OUT_VENDOR)/bin/, $(notdir $(vendor_service_bin))) )
 
 PRODUCT_COPY_FILES += \
