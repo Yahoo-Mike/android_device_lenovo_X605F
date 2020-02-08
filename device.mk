@@ -141,9 +141,9 @@ PRODUCT_COPY_FILES += \
       $(vendor_service_bin):$(addprefix $(TARGET_COPY_OUT_VENDOR)/bin/, $(notdir $(vendor_service_bin))) )
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/init/init.recovery.qcom.rc:init.recovery.qcom.rc \
-    $(LOCAL_PATH)/configs/init/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.qcom
-#    $(LOCAL_PATH)/configs/init/ueventd.qcom.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.qcom.rc
+    $(LOCAL_PATH)/configs/init.recovery.qcom.rc:root/init.recovery.qcom.rc \
+    $(LOCAL_PATH)/configs/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.qcom \
+    $(LOCAL_PATH)/configs/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc
 
 # input
 PRODUCT_COPY_FILES += $(foreach input_config, $(wildcard $(LOCAL_PATH)/configs/keylayouts/*), \
