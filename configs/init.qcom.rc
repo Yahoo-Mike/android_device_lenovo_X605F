@@ -1,0 +1,30 @@
+# init.qcom.rc
+###########################################################
+# M10 doesn't come with an init.qcom.rc at all.           #
+# The following commands are included in M10's ./init.rc. # 
+# They are here to supplement LOS init.rc.                #
+###########################################################
+#
+
+on init
+
+    mkdir /dev/stune/audio-app
+    chown system system /dev/stune/audio-app
+    chown system system /dev/stune/audio-app/tasks
+    chmod 0664 /dev/stune/audio-app/tasks
+
+    mkdir /dev/cpuset/audio-app
+    copy /dev/cpuset/cpus /dev/cpuset/audio-app/cpus
+    copy /dev/cpuset/mems /dev/cpuset/audio-app/mems
+
+    chown system system /dev/cpuset/audio-app
+    chown system system /dev/cpuset/audio-app/tasks
+    chmod 0664 /dev/cpuset/audio-app/tasks
+
+on late-init
+    trigger factory-fs
+    trigger mmi
+
+#on post-fs-data
+#    mkdir /data/app-3th 0771 system system
+

@@ -66,6 +66,7 @@ PRODUCT_COPY_FILES += $(foreach audio_config, $(wildcard $(LOCAL_PATH)/configs/a
 # bluetooth
 PRODUCT_PACKAGES += \
     libbt-vendor \
+    libbthost_if \
     android.hardware.bluetooth@1.0-impl-qti \
     android.hardware.bluetooth@1.0-impl \
     android.hardware.bluetooth@1.0-service
@@ -99,17 +100,17 @@ PRODUCT_PACKAGES += \
     qcom.fmradio
 
 # GPS
-PRODUCT_PACKAGES += \
-    libcurl \
-    libgnss \
-    libgnsspps
+#PRODUCT_PACKAGES += \
+#    libcurl \
+#    libgnss \
+#    libgnsspps
 
 PRODUCT_COPY_FILES += $(foreach gps_config, $(wildcard $(LOCAL_PATH)/configs/gps/*), \
     $(gps_config):$(addprefix $(TARGET_COPY_OUT_VENDOR)/etc/, $(notdir $(gps_config))) )
 
 # gps - hidl
 PRODUCT_PACKAGES += \
-    android.hardware.gnss@1.1-impl \
+    android.hardware.gnss@1.0-impl \
     android.hardware.gnss@1.0-impl-qti
 
 # graphics - hidl
@@ -142,6 +143,7 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/init.recovery.qcom.rc:root/init.recovery.qcom.rc \
+    $(LOCAL_PATH)/configs/init.qcom.rc:root/init.qcom.rc \
     $(LOCAL_PATH)/configs/fstab.qcom:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.qcom \
     $(LOCAL_PATH)/configs/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc
 
@@ -217,19 +219,18 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml \
 
-# Public Libraries TODO
-#PRODUCT_COPY_FILES += \
-#    $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
+# Public Libraries
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
 
-# QTI TODO
-#PRODUCT_COPY_FILES += \
-#    $(LOCAL_PATH)/configs/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/privapp-permissions-qti.xml
+# QTI
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/privapp-permissions-qti.xml
 
 # Qualcomm dependencies
 PRODUCT_PACKAGES += \
     libtinyxml \
     libxml2
-
 
 # Seccomp
 PRODUCT_COPY_FILES += $(foreach seccomp_config, $(wildcard $(LOCAL_PATH)/configs/seccomp_policy/*), \
@@ -260,23 +261,30 @@ PRODUCT_COPY_FILES += \
 ############# start wifi #############
 # Wifi
 # TODO
-#PRODUCT_PACKAGES += \
-#    libwpa_client \
+PRODUCT_PACKAGES += \
+    wcnss_service \
+    libwifi-hal-qcom \
+    wpa_supplicant \
+    wificond \
+    hostapd \
+    libwcnss_qmi
+
+#    wifilogd \
 #    libqsap_sdk \
 #    libQWiFiSoftApCfg \
-#    wificond \
-#    wifilogd \
-#    hostapd \
-#    libwifi-hal-qcom \
-#    wcnss_service \
-#    libwcnss_qmi \
-#    wpa_supplicant \
 #    wpa_supplicant.conf \
-#    android.hardware.wifi@1.0-service \
-#    android.hardware.wifi.supplicant@1.0-service
+#    libqmi_cci \
+#    libmdmdetect \
+#    libqmiservices \
+
+# wifi - hidl
+PRODUCT_PACKAGES += \
+    android.hardware.wifi@1.0-service \
+    android.hardware.wifi.supplicant@1.0-service
 
 # /vendor/etc/wifi
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/wpa_supplicant.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant.conf
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini
 
@@ -284,11 +292,11 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/WCNSS_qcom_cfg.ini:$(TARGET_COP
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/WCNSS_qcom_wlan_nv.bin:$(TARGET_COPY_OUT_VENDOR)/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/WCNSS_wlan_dictionary.dat:$(TARGET_COPY_OUT_VENDOR)/firmware/wlan/prima/WCNSS_wlan_dictionary.dat
 
-# /system/etc/frimware/wlan/prima
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat
+# /system/etc/firmware/wlan/prima  (in proprietary-files.txt)
+#PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat
 
-# /vendor/etc/hostapd
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/hostapd_default.conf:$(TARGET_COPY_OUT_VENDOR)/etc/hostapd/hostapd_default.conf 
+# /system/etc/hostapd
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf 
 
 # symlink to WCNSS_qcom_cfg.ini
 BOARD_VENDOR_EXTRA_SYMLINKS += \
@@ -297,17 +305,6 @@ BOARD_VENDOR_EXTRA_SYMLINKS += \
 # symlink to iwpriv, which some modules expect in system/xbin
 BOARD_VENDOR_EXTRA_SYMLINKS += \
     /system/bin/iwpriv:/system/xbin/iwpriv
-
-# wifi - hidl
-PRODUCT_PACKAGES += \
-    android.hardware.wifi@1.0-service
-
-#
-# System partition symlinks.
-# Parsed by vendor/cm/build/tasks/target_symlinks.mk
-#
-
-TARGET_DISABLE_WCNSS_CONFIG_COPY := true
 
 ############# end wifi #############
 
