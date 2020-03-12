@@ -78,10 +78,10 @@ BOARD_KERNEL_TAGS_OFFSET := 0x0000100
 # kernel - compile
 NEED_KERNEL_MODULE_SYSTEM := true
 TARGET_KERNEL_ARCH := arm64
-TARGET_KERNEL_CONFIG := lineage_x605f_defconfig
+TARGET_KERNEL_CONFIG := lineage_X605F_defconfig
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 # TODO - can we use LOS generic kernel ? TARGET_KERNEL_SOURCE := kernel/lenovo/msm8953
-TARGET_KERNEL_SOURCE := kernel/lenovo/x605f
+TARGET_KERNEL_SOURCE := kernel/lenovo/X605F
 
 # kernel - ramdisk
 BOARD_RAMDISK_OFFSET := 0x01000000
@@ -197,7 +197,7 @@ TARGET_FS_CONFIG_GEN := $(LOCAL_PATH)/config.fs
 
 # FM TODO
 BOARD_HAVE_QCOM_FM := true
-BOARD_HAS_QCA_FM_SOC := "cherokee"
+# BOARD_HAS_QCA_FM_SOC := "cherokee"  #M10 is WCN3680, not cherokee
 
 # GPS TODO
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
