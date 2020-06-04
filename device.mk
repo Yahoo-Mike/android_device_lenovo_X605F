@@ -100,8 +100,8 @@ PRODUCT_PACKAGES += \
     qcom.fmradio
 
 # GPS
-#PRODUCT_PACKAGES += \
-#    libcurl \
+PRODUCT_PACKAGES += \
+    libcurl \
 #    libgnss \
 #    libgnsspps
 
@@ -248,8 +248,8 @@ PRODUCT_PACKAGES += \
 # Create a link for sensors.qcom which expects the default sensor configuration at /etc/sensors
 # To be able to move this file to /vendor a link /vendor/snsc is created, which points to
 # /vendor/etc/sensors
-BOARD_VENDOR_EXTRA_SYMLINKS += \
-    /vendor/etc/sensors:snsc
+CREATE_SYMLINKS += \
+    /vendor/etc/sensors:/vendor/snsc
 
 # System Properties
 -include $(LOCAL_PATH)/system_prop.mk
@@ -299,11 +299,11 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/WCNSS_wlan_dictionary.dat:$(TAR
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/configs/wifi/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf 
 
 # symlink to WCNSS_qcom_cfg.ini
-BOARD_VENDOR_EXTRA_SYMLINKS += \
+CREATE_SYMLINKS += \
     /vendor/etc/wifi/WCNSS_qcom_cfg.ini:/vendor/firmware/wlan/prima/WCNSS_qcom_cfg.ini
 
 # symlink to iwpriv, which some modules expect in system/xbin
-BOARD_VENDOR_EXTRA_SYMLINKS += \
+CREATE_SYMLINKS += \
     /system/bin/iwpriv:/system/xbin/iwpriv
 
 ############# end wifi #############

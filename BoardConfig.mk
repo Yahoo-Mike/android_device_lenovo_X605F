@@ -110,7 +110,8 @@ TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery/root/etc/recovery.fstab
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
-BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
+BOARD_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy
+#BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 
 # Vendor
 TARGET_COPY_OUT_VENDOR := vendor
@@ -179,6 +180,7 @@ BOARD_SUPPORTS_SOUND_TRIGGER := true
 
 # Charger - enable suspend during charger mode
 BOARD_CHARGER_ENABLE_SUSPEND := true
+BOARD_CHARGER_SHOW_PERCENTAGE : = true
 
 # Display
 TARGET_USES_ION := true
@@ -229,4 +231,27 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
 # wifi - hostapd
 BOARD_HOSTAPD_DRIVER := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
+
+# Wifi - kernel driver module (wlan.ko)
+BOARD_HAS_QCOM_WLAN              := true
+BOARD_HAS_QCOM_WLAN_SDK          := true
+#TARGET_PROVIDES_WCNSS_QMI        := true
+#TARGET_USES_QCOM_WCNSS_QMI        := true
+#TARGET_USES_WCNSS_CTRL           := true  (deprecated??)
+
+WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/wlan.ko"
+WIFI_DRIVER_MODULE_NAME          := "wlan"
+
+#WIFI_HIDL_FEATURE_DISABLE_AP_MAC_RANDONIZATION := true
+
+# copy all kernel modules to /system/lib/modules & create symlink for wlan.ko
+# this is executed *after* all kernel modules are built (at end of TARGET_KERNEL_MODULES)
+COPY_MODULES:
+	mkdir -p $(TARGET_OUT)/lib/modules/pronto
+	rm -f $(TARGET_OUT)/lib/modules/wlan.ko
+	find $(KERNEL_OUT) -iname '*.ko' -exec cp -at $(TARGET_OUT)/lib/modules {} +
+#	mv $(TARGET_OUT)/lib/modules/wlan.ko $(TARGET_OUT)/lib/modules/pronto/pronto_wlan.ko
+#	ln -sf /system/lib/modules/pronto/pronto_wlan.ko $(TARGET_OUT)/lib/modules/wlan.ko
+
+TARGET_KERNEL_MODULES += COPY_MODULES
 
