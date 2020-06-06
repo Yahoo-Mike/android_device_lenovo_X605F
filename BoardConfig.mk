@@ -212,12 +212,11 @@ DEVICE_MANIFEST_FILE := $(LOCAL_PATH)/manifest.xml $(LOCAL_PATH)/X605F_manifest.
 DEVICE_MATRIX_FILE := $(LOCAL_PATH)/compatibility_matrix.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(LOCAL_PATH)/framework_compatibility_matrix.xml
 
-# Wifi TODO
 #
-
-# wifi - wcnss_service
+# wifi - wcnss_service with our libwcnss_qmi (TARGET_PROVIDES_WCNSS_QMI) to get MAC address
 PRODUCT_VENDOR_MOVE_ENABLED := true
-TARGET_USES_QCOM_WCNSS_QMI := true
+TARGET_USES_QCOM_WCNSS_QMI  := true
+TARGET_PROVIDES_WCNSS_QMI   := true
 
 # wifi - qcwcn (libwifi-hal-qcom)
 BOARD_WLAN_DEVICE := qcwcn
@@ -232,26 +231,15 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
 BOARD_HOSTAPD_DRIVER := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
 
-# Wifi - kernel driver module (wlan.ko)
-BOARD_HAS_QCOM_WLAN              := true
-BOARD_HAS_QCOM_WLAN_SDK          := true
-#TARGET_PROVIDES_WCNSS_QMI        := true
-#TARGET_USES_QCOM_WCNSS_QMI        := true
-#TARGET_USES_WCNSS_CTRL           := true  (deprecated??)
-
+# wifi - libwifi_hal
 WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/wlan.ko"
 WIFI_DRIVER_MODULE_NAME          := "wlan"
 
-#WIFI_HIDL_FEATURE_DISABLE_AP_MAC_RANDONIZATION := true
-
-# copy all kernel modules to /system/lib/modules & create symlink for wlan.ko
+# copy all kernel modules to /system/lib/modules (including wlan.ko)
 # this is executed *after* all kernel modules are built (at end of TARGET_KERNEL_MODULES)
 COPY_MODULES:
-	mkdir -p $(TARGET_OUT)/lib/modules/pronto
-	rm -f $(TARGET_OUT)/lib/modules/wlan.ko
+	mkdir -p $(TARGET_OUT)/lib/modules
 	find $(KERNEL_OUT) -iname '*.ko' -exec cp -at $(TARGET_OUT)/lib/modules {} +
-#	mv $(TARGET_OUT)/lib/modules/wlan.ko $(TARGET_OUT)/lib/modules/pronto/pronto_wlan.ko
-#	ln -sf /system/lib/modules/pronto/pronto_wlan.ko $(TARGET_OUT)/lib/modules/wlan.ko
 
 TARGET_KERNEL_MODULES += COPY_MODULES
 
