@@ -116,6 +116,9 @@ BOARD_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy
 # Vendor
 TARGET_COPY_OUT_VENDOR := vendor
 
+# Vendor init (init_x605f)
+TARGET_INIT_VENDOR_LIB := libinit_x605f
+
 # Verified Boot
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
